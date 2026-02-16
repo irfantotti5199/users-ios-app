@@ -8,12 +8,12 @@
 import Foundation
 
 protocol UserServiceProtocol {
-    func fetchUsers() async throws -> [User]
+    func fetchUsers(page: Int, limit: Int) async throws -> [User]
 }
 
 final class UserService: UserServiceProtocol {
-    func fetchUsers() async throws -> [User] {
-        guard let url = URL(string: "https://jsonplaceholder.typicode.com/users") else {
+    func fetchUsers(page: Int, limit: Int) async throws -> [User] {
+        guard let url = URL(string: "https://jsonplaceholder.typicode.com/users?_page=\(page)&_limit=\(limit)") else {
             throw URLError(.badURL)
         }
         

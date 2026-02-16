@@ -19,7 +19,7 @@ class UserListViewController: UIViewController {
         setupTableView()
         
         Task {
-            await viewModel.fetchUsers()
+            await viewModel.fetchInitialUsers()
             tableView.reloadData()
         }
         
@@ -47,6 +47,15 @@ extension UserListViewController: UITableViewDelegate, UITableViewDataSource {
         cell.configure(with: user)
         return cell
     }
-
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if (position > tableView.contentSize.height - scrollView.frame.size.height - 100) {
+            Task {
+                await viewModel.loadMore()
+                tableView.reloadData()
+            }
+        }
+    }
 }
 
